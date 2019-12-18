@@ -1,0 +1,71 @@
+# TIEMPO
+- platform: aemet
+  name: AEMET_BLNS
+  api_key: !secret aemet_api_key
+  station_id: !secret aemet_station_id_blns
+  monitored_conditions:
+    - temperature
+    - humidity
+    - pressure
+    - precipitation
+    - snow
+    - visibility
+    - wind_speed
+- platform: aemet
+  name: AEMET_BCN
+  api_key: !secret aemet_api_key
+  station_id: !secret aemet_station_id_bcn
+  monitored_conditions:
+    - temperature
+    - humidity
+    - pressure
+    - precipitation
+    - snow
+    - visibility
+    - wind_speed
+- platform: aemet
+  name: AEMET_GIR
+  api_key: !secret aemet_api_key
+  station_id: !secret aemet_station_id_gir
+  monitored_conditions:
+    - temperature
+    - humidity
+    - pressure
+    - precipitation
+    - snow
+    - visibility
+    - wind_speed
+
+# GRAFICAS GRAFANA
+- platform: command_line
+  name: Temperatura_Grafana
+  scan_interval: 600
+  command: 'curl -s -H "Authorization: Bearer eyJrIjoiQkxQWnk4M3cxNUJmSjJyVWZ5RnJZVVJUUmFoNTEyYloiLCJuIjoiaG9tZWFzc2lzdGFudCIsImlkIjoxfQ==" "http://172.20.0.4:3000/render/d-solo/d6Vu_0igz/home-assistant?orgId=1&from=now-24h&to=now&panelId=2&width=1000&height=500&tz=UTC%2B02%3A00" > /shared/grafana/temperature.png'
+- platform: command_line
+  name: Viento_Grafana
+  scan_interval: 600
+  command: 'curl -s -H "Authorization: Bearer eyJrIjoiQkxQWnk4M3cxNUJmSjJyVWZ5RnJZVVJUUmFoNTEyYloiLCJuIjoiaG9tZWFzc2lzdGFudCIsImlkIjoxfQ==" "http://172.20.0.4:3000/render/d-solo/d6Vu_0igz/home-assistant?panelId=4&orgId=1&tab=general&from=now-24h&to=now&width=1000&height=500&tz=UTC%2B02%3A00" > /shared/grafana/wind.png'
+- platform: command_line
+  name: Lluvia_Grafana
+  scan_interval: 600
+  command: 'curl -s -H "Authorization: Bearer eyJrIjoiQkxQWnk4M3cxNUJmSjJyVWZ5RnJZVVJUUmFoNTEyYloiLCJuIjoiaG9tZWFzc2lzdGFudCIsImlkIjoxfQ==" "http://172.20.0.4:3000/render/d-solo/d6Vu_0igz/home-assistant?panelId=6&orgId=1&tab=general&from=now-24h&to=now&width=1000&height=500&tz=UTC%2B02%3A00" > /shared/grafana/rain.png'
+- platform: command_line
+  name: Humedad_Grafana
+  scan_interval: 600
+  command: 'curl -s -H "Authorization: Bearer eyJrIjoiQkxQWnk4M3cxNUJmSjJyVWZ5RnJZVVJUUmFoNTEyYloiLCJuIjoiaG9tZWFzc2lzdGFudCIsImlkIjoxfQ==" "http://172.20.0.4:3000/render/d-solo/d6Vu_0igz/home-assistant?panelId=8&orgId=1&tab=general&from=now-24h&to=now&width=1000&height=500&tz=UTC%2B02%3A00" > /shared/grafana/humidity.png'
+- platform: command_line
+  name: Contaminacion_Grafana
+  scan_interval: 600
+  command: 'curl -s -H "Authorization: Bearer eyJrIjoiQkxQWnk4M3cxNUJmSjJyVWZ5RnJZVVJUUmFoNTEyYloiLCJuIjoiaG9tZWFzc2lzdGFudCIsImlkIjoxfQ==" "http://172.20.0.4:3000/render/d-solo/d6Vu_0igz/home-assistant?panelId=9&orgId=1&from=now-24h&to=now&panelId=9&width=1000&height=500&tz=UTC%2B02%3A00"  > /shared/grafana/contaminacion.png'
+
+# CALIDAD AIRE
+- platform: airvisual
+  api_key: !secret airvisual
+  monitored_conditions:
+  - us
+  - cn
+  show_on_map: true
+  scan_interval: 600
+  city: Barcelona
+  state: Catalunya
+  country: Spain

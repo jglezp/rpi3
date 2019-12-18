@@ -1,0 +1,65 @@
+homeassistant:
+  name: Home
+  latitude: 
+  longitude: 
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  time_zone: Europe/Madrid
+  customize: !include customize.yaml
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Show the introduction message on startup.
+# introduction:
+
+#lovelace:
+#  mode: yaml
+
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+sensor: !include sensor.yaml
+camera: !include camera.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+zone: !include zones.yaml
+
+
+influxdb:
+  host: 192.168.1.20
+  database: home_assistant
+
+shopping_list:
+
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.1.16
+    token: !secret vacuum
+
+http:
+
+google:
+  client_id: !secret google_id
+  client_secret: !secret google_secret
+
+owntracks:
+  max_gps_accuracy: 100
+  waypoints: true
+  waypoint_whitelist:
+    - Josep
+    - Iris
+
+frontend:
+  themes: !include themes.yaml
+
+hacs:
+  token: xxx
+  sidepanel_title: "Community"
+  sidepanel_icon: "mdi:alpha-c-box"
+  appdaemon: false
+  python_script: false
+  theme: false

@@ -1,0 +1,43 @@
+- id: ebb35c63b0f4457abda2576690f8b615
+  alias: josep_home
+  trigger:
+  - platform: webhook
+    webhook_id: josep_home
+  action:
+  - data:
+      dev_id: josep
+      location_name: home
+    service: device_tracker.see
+- id: '1567209888399'
+  alias: josep_not_home
+  trigger:
+  - platform: webhook
+    webhook_id: josep_not_home
+  condition: []
+  action:
+  - data:
+      dev_id: josep
+      location_name: not_home
+    service: device_tracker.see
+- id: '1567209928488'
+  alias: iris_home
+  trigger:
+  - platform: webhook
+    webhook_id: iris_home
+  condition: []
+  action:
+  - data:
+      dev_id: iris
+      location_name: home
+    service: device_tracker.see
+- id: '1567209956335'
+  alias: iris_not_home
+  trigger:
+  - platform: webhook
+    webhook_id: iris_not_home
+  condition: []
+  action:
+  - data:
+      dev_id: iris
+      location_name: not_home
+    service: device_tracker.see

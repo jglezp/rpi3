@@ -1,0 +1,20 @@
+- platform: local_file
+  name: Temperatura
+  file_path: /shared/grafana/temperature.png
+
+- platform: local_file
+  name: Viento
+  file_path: /shared/grafana/wind.png
+
+- platform: local_file
+  name: Humedad
+  file_path: /shared/grafana/humidity.png
+
+- platform: local_file
+  name: Lluvia
+  file_path: /shared/grafana/rain.png
+
+- platform: local_file
+  name: Contaminacion
+  file_path: /shared/grafana/contaminacion.png
+

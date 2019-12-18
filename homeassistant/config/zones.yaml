@@ -1,0 +1,19 @@
+- name: Trabajo Josep
+  latitude: 
+  longitude: 
+  radius: 100
+  icon: mdi:briefcase
+
+- name: Trabajo Iris
+  latitude:
+  longitude: 
+  radius: 200
+  icon: mdi:pharmacy
+
+  # This will override the default home zone
+- name: Home
+  latitude: 
+  longitude: 
+  radius: 25
+  icon: mdi:home
+

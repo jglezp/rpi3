@@ -1,0 +1,22 @@
+s8+josep:
+  name: Josep
+  hide_if_away: false
+  mac: 
+  picture:
+  track: true
+
+josep:
+  hide_if_away: false
+  icon:
+  mac:
+  name: josep
+  picture:
+  track: true
+
+iris:
+  hide_if_away: false
+  icon:
+  mac:
+  name: iris
+  picture:
+  track: true

@@ -1,0 +1,2 @@
+aemet - Permite sacar el tiempo de las estaciones meteorologicas AEMET (Agencia Estatal de Meteorologia)
+hacs  - Poder instalar componentes personalizados facilmente https://hacs.netlify.com/

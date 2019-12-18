@@ -1,0 +1,22 @@
+
+- cal_id: 
+  entities:
+  - device_id:
+    ignore_availability: true
+    name: 
+    track: true
+    max_results: 60
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: contacts
+    ignore_availability: true
+    name: Contacts
+    track: true
+
+- cal_id: es.spain#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: festivos_en_espana
+    ignore_availability: true
+    name: "Festivos en Espa\xF1a"
+    track: true
