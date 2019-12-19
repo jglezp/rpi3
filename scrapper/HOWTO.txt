@@ -1,0 +1,27 @@
+This is a custom app to scrap prices from Amazon, Game, Fnac or MediaMarkt shops (for videogames especially). 
+This works because I am only scrapping one time each 10 minutes (less time makes Amazon throw you a captcha).
+You have a Google Sheet with the url that you want to scrap, and Google Apps Scripts sends that petition to the app in that docker
+that scraps it and sends back the data to the Sheet, where the price is updated and if it is less than your custom threshold alerts
+you by email.
+
+Files in this path:
+Dockerfile - File to build the docker image
+*.py - files that needs to be in the pv when mounting the docker-compose (you can find it in /root in this repo)
+Code.gs - Google Apps Script that works with a Google Sheet.
+Google Sheet structure:
+Columns - Formula
+A	 	  None, manual info: "Name of the shop"
+B	 	  None, manual info: "Platform"
+C	 	  None, manual info: "Game"
+D	 	  None, automatic: "Price"
+E	 	  None, automatic lowest seen price: "Lowest"
+F	 	  None, manual alert threshold that sends you an email: "Alert"
+G	 	  None, manual url: "URL"
+H		  =MID(G1,(FIND("www.", G1)+4),(FIND(".", G1,14))-(FIND("www.", G1)+4)) - extract name shop from url
+I		  =IF(NE(J1, ""),J1, IF(NE(K1,""),K1,IF(NE(L1,""),L1,IF(NE(M1,""),M1)))) - gets the right ASIN from the next 4 columns
+J   	  =IF(H1 = "game",RIGHT(G1,6),"") - extract the needed ASIN if the url is from Game
+K  		  =IF(H1 = "amazon",MID(G1,FIND("dp/",G1)+3,10),"") - extract the needed ASIN if the url is from Amazon
+L		  =IF(H1 = "mediamarkt", MID(G1,FIND("product/",G1)+8,LEN(G1)+1-(FIND("product/",G1)+8)),"") - extract the needed ASIN if the url is from MediaMarkt
+M		  =IF(H1 = "fnac",MID(G1,FIND("/a",G1)+1,8),"") - extract the needed ASIN if the url is from Fnac
+
+You need to configure aswell a that Google triggers your code each 10 minutes.

@@ -1,0 +1,102 @@
+version: '3.6'
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    networks:
+      internal:
+        ipv4_address: 172.20.0.2
+    ports:
+      - "8080:8080"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/traefik:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.http.middlewares.http-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.traefik-middleware.basicauth.users=josep:$$apr1$$xxx
+      - traefik.http.routers.traefik-http.rule=Host(`web1`)
+      - traefik.http.routers.traefik-http.middlewares=http-redirect
+      - traefik.http.routers.traefik.rule=Host(`web1`)
+      - traefik.http.routers.traefik.middlewares=traefik-middleware
+      - traefik.http.routers.traefik.tls.certresolver=traefik
+      - traefik.http.services.traefik-service.loadbalancer.server.port=8080
+  influxdb:
+    image: hypriot/rpi-influxdb:latest
+    container_name: influxdb
+    restart: unless-stopped
+    networks:
+      internal:
+        ipv4_address: 172.20.0.5
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    volumes:
+      - /srv/influxdb/data:/data
+      - /srv/influxdb/var/lib:/var/lib
+      - /etc/localtime:/etc/localtime:ro
+  grafana:
+    image: fg2it/grafana-armhf:v5.1.4
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      internal:
+        ipv4_address: 172.20.0.4
+    ports:
+      - "3000:3000"
+    volumes:
+      - /srv/grafana:/var/lib/grafana
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - traefik.http.routers.grafana-http.rule=Host(`web2`)
+      - traefik.http.routers.grafana-http.middlewares=http-redirect
+      - traefik.http.routers.grafana.rule=Host(`web2`)
+      - traefik.http.routers.grafana.tls.certresolver=grafana
+      - traefik.http.services.grafana-service.loadbalancer.server.port=3000
+  homeassistant:
+    image: homeassistant/raspberrypi3-homeassistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    networks:
+      internal:
+        ipv4_address: 172.20.0.3
+    ports:
+      - "8123:8123"
+    volumes:
+      - /srv/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/homeassistant/shared:/shared
+    labels:
+      - traefik.http.routers.homeassistant-http.rule=Host(`web3`)
+      - traefik.http.routers.homeassistant-http.middlewares=http-redirect
+      - traefik.http.routers.homeassistant.rule=Host(`web3`)
+      - traefik.http.routers.homeassistant.tls.certresolver=homeassistant
+      - traefik.http.services.homeassistant-service.loadbalancer.server.port=8123
+  scrapper:
+    image: scrapper:v1
+    container_name: scrapper
+    restart: unless-stopped
+    networks:
+      internal:
+        ipv4_address: 172.20.0.6
+    ports:
+      - "88:5000"
+    volumes:
+      - /srv/scrapper:/opt
+      - /etc/localtime:/etc/localtime:ro
+    command: python3 /opt/api.py
+    labels:
+      - traefik.http.routers.scrapper-http.rule=Host(`web4`)
+      - traefik.http.routers.scrapper-http.middlewares=http-redirect
+      - traefik.http.routers.scrapper.rule=Host(`web4`)
+      - traefik.http.routers.scrapper.tls.certresolver=api
+      - traefik.http.services.scrapper-service.loadbalancer.server.port=5000

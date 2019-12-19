@@ -1,0 +1,53 @@
+# Docker configuration backend
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    useBindPortIP: true
+  file:
+    directory: /etc/traefik
+    watch: true
+
+# Modo debug a través de stdout
+# accessLog: {}
+
+# API and dashboard configuration
+api:
+  insecure: true
+  dashboard: true
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+
+# Certificates for each site
+certificatesResolvers:
+  grafana:
+    acme:
+      email: my-email@gmail.com
+      storage: /etc/traefik/grafana/acme.json
+      tlsChallenge: {}
+      httpChallenge:
+        entryPoint: http
+  traefik:
+    acme:
+      email: my-email@gmail.com
+      storage: /etc/traefik/traefik/acme.json
+      tlsChallenge: {}
+      httpChallenge:
+        entryPoint: http
+  homeassistant:
+    acme:
+      email: my-email@gmail.com
+      storage: /etc/traefik/homeassistant/acme.json
+      tlsChallenge: {}
+      httpChallenge:
+        entryPoint: http
+  api:
+    acme:
+      email: my-email@gmail.com
+      storage: /etc/traefik/api/acme.json
+      tlsChallenge: {}
+      httpChallenge:
+        entryPoint: http
