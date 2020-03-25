@@ -25,3 +25,7 @@ L		  =IF(H1 = "mediamarkt", MID(G1,FIND("product/",G1)+8,LEN(G1)+1-(FIND("produc
 M		  =IF(H1 = "fnac",MID(G1,FIND("/a",G1)+1,8),"") - extract the needed ASIN if the url is from Fnac
 
 You need to configure aswell that Google triggers your code each 10 minutes.
+
+Build image with:
+
+$ docker build --tag scrapper:v1 .
